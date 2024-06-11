@@ -1,27 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cinemart.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
-        public int UserId { get; set; }
+    
+        [StringLength(100)]
+        [Display(Name = "First Name")]
+        [PersonalData]
         [Required]
         public string Firstname { get; set; } = string.Empty;
+        [StringLength(100)]
+        [Display(Name = "Last Name")]
+        [PersonalData]
         [Required]
         public string Lastname { get; set; } = string.Empty;
+        [StringLength(100)]
+        [Display(Name = "Date of Birth")]
+        [PersonalData]
         [Required]
-        public string Email { get; set; } = string.Empty;
-        [Required]
-        public string EmailConfirmed { get; set; } = string.Empty;
-        [Required]
-        public string Password { get; set; } = string.Empty;
-        [Required]
-        public string PasswordConfirmed { get; set; } = string.Empty;
-        [Required]
-        public string PhoneNumber { get; set; } = string.Empty;
-        [Required]
-        public string Role { get; set; } = string.Empty;
-        public List<TicketSale>? TicketSale { get; set; }
+        public DateTime DOB { get; set; }
+
     }
 }
