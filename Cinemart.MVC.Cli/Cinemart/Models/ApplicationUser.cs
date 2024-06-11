@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cinemart.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser<Guid>
     {
     
         [StringLength(100)]
