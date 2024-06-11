@@ -8,16 +8,27 @@ namespace Cinemart.Models
         [Key]
         public int FilmShowingId { get; set; }
         [Required]
-        public DateOnly ShowDate { get; set; }
+        [Display(Name = "Showing Date")]
+        [DataType(DataType.Date)]
+        public DateTime ShowDate { get; set; }
         [Required]
-        public TimeOnly StartTime { get; set; }
+        [DataType(DataType.Time)]
+        [Display(Name = "Start Time")]
+        public DateTime StartTime { get; set; }
         [Required]
-        public TimeOnly EndTime { get; set; }
+        [DataType(DataType.Time)]
+        [Display(Name = "End Time")]
+        public DateTime EndTime { get; set; }
         [Required]
+        [Range(1, 100)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Price")]
         public decimal Price { get; set; }
-        [ForeignKey(nameof(Film))]
-        [Required]
+  
         public int FilmId { get; set; }
+        [ForeignKey(nameof(FilmId))]
+        [Required]
         public Film? Film { get; set; }
         public List<TicketSale>? TicketSale { get; set; }
     }

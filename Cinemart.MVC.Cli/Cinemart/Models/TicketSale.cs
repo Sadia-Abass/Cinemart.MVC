@@ -8,20 +8,28 @@ namespace Cinemart.Models
         [Key]
         public int TicketSaleId { get; set; }
         [Required]
-        public DateOnly SalesDate { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Sales Date")]
+        public DateTime SalesDate { get; set; }
         [Required]
-        public TimeOnly SalesTime { get; set; }
+        [DataType(DataType.Time)]
+        [Display(Name = "Sales Time")]
+        public DateTime SalesTime { get; set; }
         [Required]
         public int Quantity { get; set; }
         [Required]
+        [Display(Name = "Total Price")]
+        [Range(1, 100)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal TotalPrice { get; set; }
-        [ForeignKey(nameof(User))]
-        [Required]
+      
         public int UserId { get; set; }
-        public User? User { get; set; }
-        [ForeignKey(nameof(FilmShowing))]
-        [Required]
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser? User { get; set; }
+     
         public int FilmShowingId { get; set; }
+        [ForeignKey(nameof(FilmShowingId))]
         public FilmShowing? FilmShowing { get; set; }
     }
 }
