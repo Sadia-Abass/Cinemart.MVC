@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cinemart.Models
 {
-    public class ApplicationUser : IdentityUser<Guid>
+    public class ApplicationUser : IdentityUser<int>
     {
     
         [StringLength(100)]
@@ -20,5 +20,7 @@ namespace Cinemart.Models
         [PersonalData]
         [Required(ErrorMessage = "Enter your Date of Birth")]
         public DateTime DOB { get; set; }
+
+        public ICollection<TicketSale>? TicketSale { get; set; }
     }
 }

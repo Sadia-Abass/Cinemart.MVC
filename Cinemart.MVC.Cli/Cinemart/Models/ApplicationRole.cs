@@ -10,8 +10,8 @@ namespace Cinemart.Models
         Member
     }
 
-    public class ApplicationRole : IdentityRole<Guid>
+    public class ApplicationRole : IdentityRole<int>
     {
-        public Role RoleTitle { get; set; }
+        public string Description { get; set; } = string.Empty;
     }
 }
