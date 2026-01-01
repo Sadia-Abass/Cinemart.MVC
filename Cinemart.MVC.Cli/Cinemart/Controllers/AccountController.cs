@@ -1,6 +1,7 @@
 ﻿using Cinemart.Data;
 using Cinemart.Models;
 using Cinemart.Services.Implementations;
+using Cinemart.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,13 @@ namespace Cinemart.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Register(string returnUrl = null)
+        {
+            var registerViewModel = new RegisterViewModel();
+            registerViewModel.ReturnUrl = returnUrl;
+            return View(registerViewModel);
         }
     }
 }
