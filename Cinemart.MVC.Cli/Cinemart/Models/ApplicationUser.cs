@@ -22,6 +22,7 @@ namespace Cinemart.Models
         [PersonalData]
         [Required(ErrorMessage = "Enter your Date of Birth")]
         public DateTime DOB { get; set; }
+        public string imageUrl { get; set; } = string.Empty;
 
         public ICollection<TicketSale>? TicketSale { get; set; }
         public virtual ICollection<ApplicationUserClaim>? Claims { get; set; }
