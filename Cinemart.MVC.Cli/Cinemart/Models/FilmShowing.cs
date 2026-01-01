@@ -7,18 +7,22 @@ namespace Cinemart.Models
     {
         [Key]
         public int FilmShowingId { get; set; }
+
         [Required]
         [Display(Name = "Showing Date")]
         [DataType(DataType.Date)]
         public DateTime ShowDate { get; set; }
+
         [Required]
         [DataType(DataType.Time)]
         [Display(Name = "Start Time")]
         public DateTime StartTime { get; set; }
+
         [Required]
         [DataType(DataType.Time)]
         [Display(Name = "End Time")]
         public DateTime EndTime { get; set; }
+
         [Required]
         [Range(1, 100)]
         [DataType(DataType.Currency)]

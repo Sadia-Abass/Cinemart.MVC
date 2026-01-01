@@ -7,16 +7,20 @@ namespace Cinemart.Models
     {
         [Key]
         public int TicketSaleId { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Sales Date")]
         public DateTime SalesDate { get; set; }
+
         [Required]
         [DataType(DataType.Time)]
         [Display(Name = "Sales Time")]
         public DateTime SalesTime { get; set; }
+
         [Required]
         public int Quantity { get; set; }
+
         [Required]
         [Display(Name = "Total Price")]
         [Range(1, 100)]

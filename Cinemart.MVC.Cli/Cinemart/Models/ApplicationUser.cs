@@ -11,11 +11,13 @@ namespace Cinemart.Models
         [PersonalData]
         [Required(ErrorMessage = "Enter your First Name")]
         public string Firstname { get; set; } = string.Empty;
+
         [StringLength(100)]
         [Display(Name = "Last Name")]
         [PersonalData]
         [Required(ErrorMessage = "Enter your Last Name")]
         public string Lastname { get; set; } = string.Empty;
+
         [Display(Name = "Date of Birth")]
         [PersonalData]
         [Required(ErrorMessage = "Enter your Date of Birth")]
