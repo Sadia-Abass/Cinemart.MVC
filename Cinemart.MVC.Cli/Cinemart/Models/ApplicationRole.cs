@@ -13,5 +13,7 @@ namespace Cinemart.Models
     public class ApplicationRole : IdentityRole<int>
     {
         public string Description { get; set; } = string.Empty;
+        public virtual ICollection<ApplicationUserRole>? UserRoles { get; set; }
+        public virtual ICollection<ApplicationRoleClaim>? RoleClaims { get; set; }
     }
 }

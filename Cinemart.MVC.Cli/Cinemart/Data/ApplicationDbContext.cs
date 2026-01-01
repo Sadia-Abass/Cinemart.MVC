@@ -14,7 +14,79 @@ namespace Cinemart.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            //SeedRoles(builder);
+            builder.HasDefaultSchema("dbo");
+
+            builder.Entity<ApplicationUser>(e =>
+            {
+                // Each User can have many UserClaims
+                e.HasMany(e => e.Claims)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(uc => uc.UserId)
+                    .IsRequired();
+
+                // Each User can have many UserLogins
+                e.HasMany(e => e.Logins)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ul => ul.UserId)
+                    .IsRequired();
+
+                // Each User can have many UserTokens
+                e.HasMany(e => e.Tokens)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ut => ut.UserId)
+                    .IsRequired();
+
+                // Each User can have many entries in the UserRole join table
+                e.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+
+                // 
+                e.ToTable(name: "Users");
+            });
+
+            builder.Entity<ApplicationRole>(e =>
+            {
+                // Each Role can have many entries in the UserRole join table
+                e.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.Role)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+
+                // Each Role can have many associated RoleClaims
+                e.HasMany(e => e.RoleClaims)
+                    .WithOne(e => e.Role)
+                    .HasForeignKey(rc => rc.RoleId)
+                    .IsRequired();
+
+                e.ToTable(name: "Roles");
+            });
+
+            builder.Entity<ApplicationUserClaim>(e =>
+            {
+                e.ToTable(name: "UserClaims");
+            });
+
+            builder.Entity<ApplicationUserLogin>(e =>
+            {
+                e.ToTable(name: "UserLogins");
+            });
+
+            builder.Entity<ApplicationRoleClaim>(e =>
+            {
+                e.ToTable(name: "RoleClaims");
+            });
+
+            builder.Entity<ApplicationUserToken>(e =>
+            {
+                e.ToTable(name: "UserTokens");
+            });
+
+            builder.Entity<ApplicationUserRole>(e =>
+            {
+                e.ToTable(name: "UserRoles");
+            });
 
             var roles = new List<ApplicationRole> 
             {

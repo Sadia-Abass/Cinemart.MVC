@@ -24,5 +24,35 @@ namespace Cinemart.Models
         public DateTime DOB { get; set; }
 
         public ICollection<TicketSale>? TicketSale { get; set; }
+        public virtual ICollection<ApplicationUserClaim>? Claims { get; set; }
+        public virtual ICollection<ApplicationUserLogin>? Logins { get; set; }
+        public virtual ICollection<ApplicationUserToken>? Tokens { get; set; }
+        public virtual ICollection<ApplicationUserRole>? UserRoles { get; set; }
+    }
+
+    public class ApplicationUserRole : IdentityUserRole<String>
+    {
+        public virtual ApplicationUser? User { get; set; }
+        public virtual ApplicationRole? Role { get; set; }
+    }
+
+    public class ApplicationUserClaim : IdentityUserClaim<string>
+    {
+        public virtual ApplicationUser? User { get; set; }
+    }
+
+    public class ApplicationUserLogin : IdentityUserLogin<string>
+    {
+        public virtual ApplicationUser? User { get; set; }
+    }
+
+    public class ApplicationRoleClaim : IdentityRoleClaim<string>
+    {
+        public virtual ApplicationRole? Role { get; set; }
+    }
+
+    public class ApplicationUserToken : IdentityUserToken<string>
+    {
+        public virtual ApplicationUser? User { get; set; }
     }
 }
