@@ -1,5 +1,8 @@
+using Cinemart.Configurations;
 using Cinemart.Data;
 using Cinemart.Models;
+using Cinemart.Services.Implementations;
+using Cinemart.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +16,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders(); ;
+
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddScoped<IFileUploaderService, FileUploaderService>();
 
 var app = builder.Build();
 

@@ -20,7 +20,6 @@
   <ItemGroup>
     <Folder Include="Repositories\Interfaces\" />
     <Folder Include="Repositories\Implementations\" />
-    <Folder Include="Views\Account\" />
   </ItemGroup>
 
 </Project>
