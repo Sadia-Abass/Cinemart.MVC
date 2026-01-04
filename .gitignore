@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Cinemart.MVC.Cli/Cinemart/appsettings.json
