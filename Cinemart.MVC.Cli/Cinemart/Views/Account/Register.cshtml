@@ -1,58 +1,67 @@
 ﻿@using Cinemart.ViewModels
 @model RegisterViewModel
 
-<h1>Register</h1>
-<form asp-controller="Account" asp-action="Register" method="post" role="form" enctype="multipart/form-data">
-    <h4>Create a new account</h4>
-    <hr />
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Firstname" class="cod-md-2"></label>
-        <div class="col-md-10">
-            <input type="text" asp-for="Firstname" class="form-control" />
-            <span asp-validation-for="Firstname" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Lastname" class="cod-md-2"></label>
-            <div class="col-md-10">
-                <input type="text" asp-for="Lastname" class="form-control" />
-                <span asp-validation-for="Lastname" class="text-danger"></span>
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml"; ;
+}
+
+
+<div class="account-container-register">
+    <div class="account-box">
+        <h2 class="text-center mb-4">Register</h2>
+        <h2 class="text-center mb-4">Create a new account</h2>
+        <hr />
+        <form asp-controller="Account" asp-action="Register" method="post" role="form" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Firstname" class="form-label"></label>
+                    <input type="text" asp-for="Firstname" class="form-control" />
+                    <span asp-validation-for="Firstname" class="text-danger"></span>
+                    </div>
+                <div class="mb-3">
+                    <label asp-for="Lastname" class="form-label"></label>
+                        <input type="text" asp-for="Lastname" class="form-control" />
+                        <span asp-validation-for="Lastname" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                        <input type="email" asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                        <input type="password" asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input type="password" asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DOB" class="form-label"></label>
+                        <input type="date" asp-for="DOB" class="form-control" />
+                        <span asp-validation-for="DOB" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ImageUrl" class="form-label">Profile Image</label>
+                        <input type="file" asp-for="ImageUrl" class="form-control" />
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+            <button type="submit" value="Register" class="btn btn-success w-100 p-2">Register</button>
+            <p class="text-center mt-2">Already have an account? <a asp-controller="Account" asp-action="Login" class="text-decoration-none">Login</a></p>
+            <div class="text-center">
+                <a asp-controller="Home" asp-action="Index" class="text-decoration-none mt-3">Back</a>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Email" class="cod-md-2"></label>
-            <div class="col-md-10">
-                <input type="email" asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Password" class="cod-md-2"></label>
-            <div class="col-md-10">
-                <input type="password" asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ConfirmPassword" class="cod-md-2"></label>
-            <div class="col-md-10">
-                <input type="password" asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="DOB" class="cod-md-2"></label>
-            <div class="col-md-10">
-                <input type="date" asp-for="DOB" class="form-control" />
-                <span asp-validation-for="DOB" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ImageUrl" class="cod-md-2"></label>
-            <div class="col-md-10">
-                <input type="file" asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-        </div>
+        </form>
     </div>
-</form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+    }
+}
+
