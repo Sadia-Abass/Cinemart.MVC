@@ -113,11 +113,16 @@ namespace Cinemart.Controllers
                 return View(loginViewModel);
             }
 
-            var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: true);
 
             if (result.Succeeded) 
             {
                 return RedirectToAction("Index", "Home");
+            }
+
+            if (result.IsLockedOut)
+            {
+                return RedirectToAction("Lockout");
             }
 
             ModelState.AddModelError(string.Empty, "Invalid Login Attempt.");
