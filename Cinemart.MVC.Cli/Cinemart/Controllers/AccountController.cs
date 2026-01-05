@@ -30,6 +30,7 @@ namespace Cinemart.Controllers
             return View();
         }
 
+        [HttpGet]
         public async Task<IActionResult> Register(string? returnUrl = null)
         {
             var registerViewModel = new RegisterViewModel();
@@ -38,30 +39,98 @@ namespace Cinemart.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel, string? returnUrl = null)
         {
             registerViewModel.ReturnUrl = returnUrl;
             returnUrl = returnUrl ?? Url.Content("~/");
-            if (ModelState.IsValid)
+
+            var userImage = await _fileUploaderService.AddFileAsync(registerViewModel.ImageUrl);
+
+            if (!ModelState.IsValid)
             {
-                var user = new ApplicationUser
-                {
-                    Firstname = registerViewModel.Firstname,
-                    Lastname = registerViewModel.Lastname,
-                    UserName = registerViewModel.Email,
-                    Email = registerViewModel.Email,
-                    DOB = registerViewModel.DOB,
-                    imageUrl = registerViewModel.ReturnUrl
-                };
-                var result = await _userManager.CreateAsync(user, registerViewModel.Password);
-                if (result.Succeeded) 
-                { 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
-                }
-                ModelState.AddModelError("Password", "User could not be created. Password not unique enough.");
+                return View(registerViewModel);
             }
+
+            var user = new ApplicationUser
+            {
+                Firstname = registerViewModel.Firstname,
+                Lastname = registerViewModel.Lastname,
+                UserName = registerViewModel.Email,
+                NormalizedUserName = registerViewModel.Email.ToUpper(),
+                Email = registerViewModel.Email,
+                NormalizedEmail = registerViewModel.Email.ToUpper(),
+                DOB = registerViewModel.DOB,
+                imageUrl = userImage.SecureUrl.ToString(),
+            };
+
+            var result = await _userManager.CreateAsync(user, registerViewModel.Password);
+
+            if (result.Succeeded)
+            {
+                var roleExists = await _roleManager.RoleExistsAsync("Member");
+
+                if (!roleExists)
+                {
+                    var role = new ApplicationRole 
+                    { 
+                        Name = "Member",
+                        Description = "Customer"
+                    };
+
+                    await _roleManager.CreateAsync(role);
+                }
+
+                await _userManager.AddToRoleAsync(user, "Member");
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return LocalRedirect(returnUrl);
+            }
+
+            foreach(var error in result.Errors)
+            {
+                //ModelState.AddModelError("Password", "User could not be created. Password not unique enough.");
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+           
             return View(registerViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Login(string? returnUrl = null)
+        {
+            var loginViewModel = new LoginViewModel();
+            loginViewModel.ReturnUrl = returnUrl ?? Url.Content("~/");
+            return View(loginViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel, string returnrl = null)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(loginViewModel);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: false);
+
+            if (result.Succeeded) 
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid Login Attempt.");
+            return View(loginViewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
