@@ -38,6 +38,7 @@ namespace Cinemart.ViewModels
         [Required(ErrorMessage = "Enter your Date of Birth")]
         public DateTime DOB { get; set; }
 
+        [Display(Name = "Profile Image")]
         public IFormFile? ImageUrl { get; set; } 
 
         public string ReturnUrl { get; set; } = string.Empty;
