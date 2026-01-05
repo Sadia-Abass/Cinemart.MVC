@@ -9,7 +9,7 @@
 <div class="account-container" >
     <div class="account-box">
         <h2 class="text-center mb-4">Login</h2>
-        <form class="" asp-action="Login" method="post">
+        <form class="" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3">
