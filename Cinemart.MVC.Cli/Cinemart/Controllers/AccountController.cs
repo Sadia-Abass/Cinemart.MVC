@@ -165,5 +165,50 @@ namespace Cinemart.Controllers
                 return RedirectToAction("ChangePassword", "Account", new { username = user.UserName});
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangePassword(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("ForgotPassword", "Account");
+            }
+
+            return View(new ChangePasswordViewModel { Email = username });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePasswordViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong.");
+                return View(changePasswordViewModel);
+            }
+
+            var user = await _userManager.FindByNameAsync(changePasswordViewModel.Email);
+            if (user == null) 
+            {
+                ModelState.AddModelError(string.Empty, "User not found.");
+                return View(changePasswordViewModel);
+            }
+
+            var result = await _userManager.RemovePasswordAsync(user);
+            if (result.Succeeded) 
+            {
+                result = await _userManager.AddPasswordAsync(user, changePasswordViewModel.NewPassword);
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                return View(changePasswordViewModel);
+            }
+        }
     }
 }
