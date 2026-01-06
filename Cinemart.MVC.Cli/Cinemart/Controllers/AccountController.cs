@@ -143,5 +143,27 @@ namespace Cinemart.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(VerifyEmailViewModel verifyEmailViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(verifyEmailViewModel);
+            }
+
+            var user = await _userManager.FindByEmailAsync(verifyEmailViewModel.Email);
+
+            if (user == null) 
+            {
+                ModelState.AddModelError(string.Empty, "User not found.");
+                return View(verifyEmailViewModel);
+            }
+            else
+            {
+                return RedirectToAction("ChangePassword", "Account", new { username = user.UserName});
+            }
+        }
     }
 }
