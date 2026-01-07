@@ -9,6 +9,9 @@ namespace Cinemart.ViewModels
         [Display(Name = "Email Address")]
         public string Email { get; set; } = string.Empty;
 
+        [Required]
+        public string Token { get; set; } 
+
         [Required(ErrorMessage = "New Password is required.")]
         [StringLength(34, ErrorMessage = "The {0} must be at least {1} characters long.", MinimumLength = 8)]
         [DataType(DataType.Password)]
