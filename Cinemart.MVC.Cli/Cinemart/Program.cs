@@ -1,7 +1,9 @@
 using Cinemart.Configurations;
 using Cinemart.Data;
 using Cinemart.Models;
+using Cinemart.Services.implementations;
 using Cinemart.Services.Implementations;
+using Cinemart.Services.interfaces;
 using Cinemart.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +31,9 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddScoped<IFileUploaderService, FileUploaderService>();
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 var app = builder.Build();
 
