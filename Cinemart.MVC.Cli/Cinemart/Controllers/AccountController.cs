@@ -1,6 +1,7 @@
 ﻿using Cinemart.Data;
 using Cinemart.Models;
 using Cinemart.Services.Implementations;
+using Cinemart.Services.interfaces;
 using Cinemart.Services.Interfaces;
 using Cinemart.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -15,14 +16,16 @@ namespace Cinemart.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IEmailService _emailService;
 
-        public AccountController(IFileUploaderService fileUploaderService, ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
+        public AccountController(IFileUploaderService fileUploaderService, ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager, IEmailService emailService)
         {
             _fileUploaderService = fileUploaderService;
             _applicationDbContext = applicationDbContext;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _emailService = emailService;
         }
 
         public IActionResult Index()
@@ -155,26 +158,38 @@ namespace Cinemart.Controllers
 
             var user = await _userManager.FindByEmailAsync(verifyEmailViewModel.Email);
 
-            if (user == null) 
+            if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "User not found.");
                 return View(verifyEmailViewModel);
             }
-            else
-            {
-                return RedirectToAction("ChangePassword", "Account", new { username = user.UserName});
-            }
+
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = Url.Action("ChangePassword", "Account", new {email = verifyEmailViewModel.Email, token = resetToken}, Request.Scheme);
+
+            var subject = "Reset Password";
+            var body = $"You recently requested a new password for your CinemArt account. If this was you, please click the link: <a href='{resetLink}'>link</a>";
+
+            await _emailService.SendEmailAsync(verifyEmailViewModel.Email, subject, body);
+
+            return RedirectToAction("EmailSent", "Account");
         }
 
         [HttpGet]
-        public async Task<IActionResult> ChangePassword(string username)
+        public async Task<IActionResult> ChangePassword(string email, string token)
         {
-            if (string.IsNullOrEmpty(username))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
             {
                 return RedirectToAction("ForgotPassword", "Account");
             }
 
-            return View(new ChangePasswordViewModel { Email = username });
+            var model = new ChangePasswordViewModel
+            {
+                Email = email,
+                Token = token
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -187,28 +202,33 @@ namespace Cinemart.Controllers
                 return View(changePasswordViewModel);
             }
 
-            var user = await _userManager.FindByNameAsync(changePasswordViewModel.Email);
+            var user = await _userManager.FindByEmailAsync(changePasswordViewModel.Email);
             if (user == null) 
             {
                 ModelState.AddModelError(string.Empty, "User not found.");
                 return View(changePasswordViewModel);
             }
 
-            var result = await _userManager.RemovePasswordAsync(user);
-            if (result.Succeeded) 
+            var resetResult = await _userManager.ResetPasswordAsync(user, changePasswordViewModel.Token, changePasswordViewModel.NewPassword);
+            if (!resetResult.Succeeded)
             {
-                result = await _userManager.AddPasswordAsync(user, changePasswordViewModel.NewPassword);
-                return RedirectToAction("Login", "Account");
-            }
-            else
-            {
-                foreach(var error in result.Errors)
+                foreach (var error in resetResult.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-
-                return View(changePasswordViewModel);
             }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View(changePasswordViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult EmailSent()
+        {
+            return View();
         }
     }
 }
