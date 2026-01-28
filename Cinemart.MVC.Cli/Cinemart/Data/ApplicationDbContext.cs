@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cinemart.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -90,10 +90,10 @@ namespace Cinemart.Data
 
             var roles = new List<ApplicationRole> 
             {
-                new ApplicationRole { Id = 1, Name = Enum.GetName<Role>(Role.Admin), Description = "Adminstrator" },
-                new ApplicationRole { Id = 2, Name = Enum.GetName<Role>(Role.Member), Description = "Customer" },
-                new ApplicationRole { Id = 3, Name = Enum.GetName<Role>(Role.Manager), Description = "Manager" },
-                new ApplicationRole { Id = 4, Name = Enum.GetName<Role>(Role.Employee), Description = "Employee" }
+                new ApplicationRole { Id = Guid.NewGuid(), Name = Enum.GetName<Role>(Role.Admin), Description = "Adminstrator" },
+                new ApplicationRole { Id = Guid.NewGuid(), Name = Enum.GetName<Role>(Role.Member), Description = "Customer" },
+                new ApplicationRole { Id = Guid.NewGuid(), Name = Enum.GetName<Role>(Role.Manager), Description = "Manager" },
+                new ApplicationRole { Id = Guid.NewGuid(), Name = Enum.GetName<Role>(Role.Employee), Description = "Employee" }
             };
 
             builder.Entity<ApplicationRole>().HasData(roles);
