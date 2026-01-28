@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cinemart.Models
 {
-    public class ApplicationUser : IdentityUser<int>
+    public class ApplicationUser : IdentityUser<Guid>
     {
     
         [StringLength(100)]
@@ -38,28 +38,28 @@ namespace Cinemart.Models
         public virtual ICollection<ApplicationUserRole>? UserRoles { get; set; }
     }
 
-    public class ApplicationUserRole : IdentityUserRole<String>
+    public class ApplicationUserRole : IdentityUserRole<Guid>
     {
         public virtual ApplicationUser? User { get; set; }
         public virtual ApplicationRole? Role { get; set; }
     }
 
-    public class ApplicationUserClaim : IdentityUserClaim<string>
+    public class ApplicationUserClaim : IdentityUserClaim<Guid>
     {
         public virtual ApplicationUser? User { get; set; }
     }
 
-    public class ApplicationUserLogin : IdentityUserLogin<string>
+    public class ApplicationUserLogin : IdentityUserLogin<Guid>
     {
         public virtual ApplicationUser? User { get; set; }
     }
 
-    public class ApplicationRoleClaim : IdentityRoleClaim<string>
+    public class ApplicationRoleClaim : IdentityRoleClaim<Guid>
     {
         public virtual ApplicationRole? Role { get; set; }
     }
 
-    public class ApplicationUserToken : IdentityUserToken<string>
+    public class ApplicationUserToken : IdentityUserToken<Guid>
     {
         public virtual ApplicationUser? User { get; set; }
     }
