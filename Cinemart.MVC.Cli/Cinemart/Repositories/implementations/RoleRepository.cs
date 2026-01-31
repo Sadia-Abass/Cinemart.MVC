@@ -50,7 +50,7 @@ namespace Cinemart.Repositories.implementations
                 {
                     Id = r.Id,
                     Name = r.Name!,
-                    Discription = r.Description,
+                    Description = r.Description,
                     IsActive = r.IsActive,
                     CreatedDate = r.CreatedDate,
                 }).ToListAsync();
@@ -83,7 +83,7 @@ namespace Cinemart.Repositories.implementations
                 Id = Guid.NewGuid(),
                 Name = createRoleViewModel.Name.Trim(),
                 NormalizedName = createRoleViewModel.Name.Trim().ToUpperInvariant(), // For case-insensitive comparison
-                Description = createRoleViewModel.Discription.Trim(),
+                Description = createRoleViewModel.Description.Trim(),
                 IsActive = createRoleViewModel.IsActive,
                 CreatedDate = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow,
@@ -108,7 +108,7 @@ namespace Cinemart.Repositories.implementations
             {
                 Id = role.Id,
                 Name = role.Name ?? string.Empty,
-                Discription = role.Description,
+                Description = role.Description,
                 IsActive = role.IsActive,
                 ConcurrencyStamp = role.ConcurrencyStamp // For concurrency checks
             };
@@ -154,7 +154,7 @@ namespace Cinemart.Repositories.implementations
             // Update properties
             role.Name = editRoleViewModel.Name.Trim();
             role.NormalizedName = editRoleViewModel.Name.ToUpperInvariant();
-            role.Description = editRoleViewModel.Discription;
+            role.Description = editRoleViewModel.Description;
             role.IsActive = editRoleViewModel.IsActive;
             role.ModifiedDate = DateTime.UtcNow;
 
