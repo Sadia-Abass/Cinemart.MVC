@@ -13,6 +13,11 @@ namespace Cinemart.ViewModels.Users
 
         [Display(Name = "Email Confirmation")]
         public bool? EmailConfirmed { get; set; } // All/Confirmed/Unconfirmed
+
+        [Display(Name = "Page Number")]
+        [Range(1, int.MaxValue, ErrorMessage = "Page number must be 1 or greater.")]
+        public int PageNumber { get; set; } = 1; // Default page number
+
         [Display(Name = "Page Number")]
         [Range(1, int.MaxValue, ErrorMessage = "Page number must be 1 or greater.")]
         public int PageSize { get; set; } = 5; // Default page size
