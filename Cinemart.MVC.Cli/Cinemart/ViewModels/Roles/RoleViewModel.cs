@@ -11,8 +11,8 @@ namespace Cinemart.ViewModels.Roles
         public string Name { get; init; } = string.Empty;
 
         [Display(Name = "Role Description")]
-        public string Discription { get; init; } = string.Empty;
-        public bool? IsActive { get; init; }
+        public string Description { get; init; } = string.Empty;
+        public bool IsActive { get; init; }
         public DateTime? CreatedDate { get; init; }
     }
 }
