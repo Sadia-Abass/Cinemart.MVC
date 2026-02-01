@@ -47,8 +47,6 @@ namespace Cinemart.ViewModels.Users
 
         [Display(Name = "Upload Picture")]
         public string imageUrl { get; set; } = string.Empty;
-
-        public DateTime CreatedAt { get; set; }
       
         // Model-level validations that are easier to express in code than attributes
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
