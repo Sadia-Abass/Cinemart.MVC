@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Cinemart.ViewModels
+namespace Cinemart.ViewModels.Users
 {
     public class EditUserViewModel
     {

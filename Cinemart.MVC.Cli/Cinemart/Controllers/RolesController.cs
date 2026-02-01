@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cinemart.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class RolesController : Controller
     {
         private readonly IRoleRepository _roleRepository;
