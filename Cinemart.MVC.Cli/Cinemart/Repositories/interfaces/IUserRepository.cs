@@ -1,15 +1,18 @@
 ﻿using Cinemart.ViewModels;
 using Cinemart.ViewModels.Users;
+using Microsoft.AspNetCore.Identity;
 
 namespace Cinemart.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<UserViewModel>> GetAll();
-        Task<UserViewModel> GetUserByIdAsync(Guid id);
-        Task<CreateUserViewModel> CreateUserAsync(CreateUserViewModel createUserViewModel);
-        Task<EditUserViewModel> UpdateUserAsync(EditUserViewModel editUserViewModel);
-        Task<UserViewModel> DeleteUserAsync(Guid id);
-        Task<UserRolesViewModel> ManageRolesAsync(UserRolesViewModel userRoleViewModel);
+        Task<PagedResult<UserViewModel>> GetAllUsersAsync(UserListFilterViewModel filter);
+        Task<UserViewModel> GetUserDetailsAsync(Guid id);
+        Task<(IdentityResult Result, Guid? UserId)> CreateUserAsync(CreateUserViewModel createUserViewModel);
+        Task<EditUserViewModel?> GetForEditAsync(Guid id);
+        Task<IdentityResult> UpdateUserAsync(EditUserViewModel editUserViewModel);
+        Task<IdentityResult> DeleteUserAsync(Guid id);
+        Task<UserRolesEditViewModel?> GetRolesForEditAsync(Guid userId);
+        Task<IdentityResult> UpdateRolesAsync(Guid userId, IEnumerable<Guid> selectedRoleIds);
     }
 }
