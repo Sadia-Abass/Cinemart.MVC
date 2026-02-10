@@ -2,7 +2,9 @@ using Cinemart.Configurations;
 using Cinemart.Data;
 using Cinemart.Models;
 using Cinemart.Repositories.implementations;
+using Cinemart.Repositories.Implementations;
 using Cinemart.Repositories.interfaces;
+using Cinemart.Repositories.Interfaces;
 using Cinemart.Services.implementations;
 using Cinemart.Services.Implementations;
 using Cinemart.Services.interfaces;
@@ -37,7 +39,9 @@ builder.Services.AddScoped<IFileUploaderService, FileUploaderService>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<IEmailService, EmailService>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
 
 var app = builder.Build();
 
