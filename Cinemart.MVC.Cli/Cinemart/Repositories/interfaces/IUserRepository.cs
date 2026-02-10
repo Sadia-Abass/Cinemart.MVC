@@ -7,7 +7,7 @@ namespace Cinemart.Repositories.Interfaces
     public interface IUserRepository
     {
         Task<PagedResult<UserViewModel>> GetAllUsersAsync(UserListFilterViewModel filter);
-        Task<UserViewModel> GetUserDetailsAsync(Guid id);
+        Task<UserDetailsViewModel?> GetUserDetailsAsync(Guid id);
         Task<(IdentityResult Result, Guid? UserId)> CreateUserAsync(CreateUserViewModel createUserViewModel);
         Task<EditUserViewModel?> GetForEditAsync(Guid id);
         Task<IdentityResult> UpdateUserAsync(EditUserViewModel editUserViewModel);

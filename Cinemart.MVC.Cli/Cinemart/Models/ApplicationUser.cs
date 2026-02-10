@@ -21,7 +21,9 @@ namespace Cinemart.Models
         [Display(Name = "Date of Birth")]
         [PersonalData]
         [Required(ErrorMessage = "Enter your Date of Birth")]
-        public DateTime DOB { get; set; }
+        public DateTime? DOB { get; set; }
+
+        public DateTime? LastLogin { get; init; }
 
         public string imageUrl { get; set; } = string.Empty;
 
